@@ -1,57 +1,52 @@
-#include<stdio.h>
-#include<stdarg.h>
+#include <stdio.h>
+#include <stdarg.h>
+
 /**
- * _printf - sum all arguements
- * @format: number of arguements
- * Return: 0 is n is 0 or return sum
+ * _printf - printf like-function
+ * @format: mandatory parameter
+ * @...: variadic parameters
+ * Return: count
  */
 int _printf(const char *format, ...)
-
-va_list text;
-
-	va_start(text, format);
 {
+	int count = 0;
 
-	int sum = 0;
+	va_list args;
 
-	while (*format != '\0')
+	va_start(args, format);
+
+	for (int i = 0; format[i] != '\0'; i++)
 	{
-		if (*format == '%')
+		if (format[i] != '%')
 		{
-			format++;
-
-			if (*format == 'c')
-			{
-				int c = va_arg(text, int);
-
-				putchar(c);
-				sum++;
-			}
-			else if (*format == 's')
-			{
-				char *str = va_arg(text, char*);
-
-				while (*str != '\0')
-				{
-					putchar(*str);
-					str++;
-					sum++;
-				}
-			}
-			else if (*format == '%')
-			{
-				putchar('%');
-				sum++;
-			}
+			printf("%c", format[i]);
+			count++;
 		}
 		else
 		{
-			putchar(*format);
-			sum++;
-		}
+			switch (format[i + 1])
+			{
+				case 'c':
+					printf("%c", va_arg(args, int));
+					count++;
+					break;
+				case 's':
+					printf("%s", va_arg(args, char *));
+					count++;
+					break;
+				case '%':
+					printf("%%");
+					count++;
+					break;
+				default:
 
-		format++;
+				printf("%%");
+				count += 2;
+			}
+		}
 	}
-	va_end(text);
-	return (sum);
+
+	va_end(args);
+
+	return (count);
 }
