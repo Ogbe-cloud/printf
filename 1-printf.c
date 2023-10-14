@@ -6,10 +6,11 @@
  * Return: 0 is n is 0 or return sum
  */
 int _printf(const char *format, ...)
-{
-	va_list text;
+
+va_list text;
 
 	va_start(text, format);
+{
 
 	int sum = 0;
 
