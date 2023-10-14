@@ -1,15 +1,16 @@
-#include <stdarg.h>
 #include <stdio.h>
+#include <stdarg.h>
 
 /**
  * _printf - printf like-function
  * @format: mandatory parameter
  * @...: variadic parameters
  * Return: count
- *
  */
 int _printf(const char *format, ...)
 {
+	int count = 0;
+
 	va_list args;
 
 	va_start(args, format);
@@ -19,23 +20,33 @@ int _printf(const char *format, ...)
 		if (format[i] != '%')
 		{
 			printf("%c", format[i]);
+			count++;
 		}
 		else
 		{
-			if (format[i + 1] == 'd' || format[i + 1] == 'i')
+			switch (format[i + 1])
 			{
-				printf("%d", va_arg(args, int));
+				case 'c':
+					printf("%c", va_arg(args, int));
+					count++;
+					break;
+				case 's':
+					printf("%s", va_arg(args, char *));
+					count++;
+					break;
+				case '%':
+					printf("%%");
+					count++;
+					break;
+				default:
+
+				printf("%%");
+				count += 2;
 			}
-			else
-			{
-				printf("format does not exists");
-			}
-			i++;
 		}
 	}
 
 	va_end(args);
 
-	return (0);
+	return (count);
 }
-
