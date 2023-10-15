@@ -13,7 +13,7 @@ int main(void)
 
 	int ct;
 
-	ct = _printf("Character:%c, String:%s, Percentage:30%%\n", 'B', str);
+	ct = _printf(" Character:%c\n String:%s\n Percentage:30%%\n", 'B', str);
 
 	printf("Total characters printed: %d\n", ct);
 	return (0);

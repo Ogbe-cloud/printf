@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdarg.h>
-
+#include "main.h"
 /**
  * _printf - printf like-function
  * @format: mandatory parameter
@@ -9,6 +7,8 @@
  */
 int _printf(const char *format, ...)
 {
+	int value;
+	char *str;
 	int count = 0;
 
 	va_list args;
@@ -19,7 +19,7 @@ int _printf(const char *format, ...)
 	{
 		if (format[i] != '%')
 		{
-			printf("%c", format[i]);
+			write(1, &format[i], 1);
 			count++;
 		}
 		else
@@ -27,22 +27,27 @@ int _printf(const char *format, ...)
 			switch (format[i + 1])
 			{
 				case 'c':
-					printf("%c", va_arg(args, int));
+					value = va_arg(args, int);
+
+					write(1, &value, 1);
 					count++;
 					break;
 				case 's':
-					printf("%s", va_arg(args, char *));
-					count++;
+					str = va_arg(args, char *);
+
+					write(1, str, strlen(str));
+					count += strlen(str);
 					break;
 				case '%':
-					printf("%%");
+					write(1, &format[i], 1);
 					count++;
 					break;
 				default:
 
-				printf("%%");
-				count += 2;
+				write(1, &format[i], 1);
+				count ++;
 			}
+			i++;
 		}
 	}
 
