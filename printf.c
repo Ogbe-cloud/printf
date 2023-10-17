@@ -1,21 +1,23 @@
 #include "main.h"
 /**
- * _printf - printf like-function
+ * _printf - To print out
  * @format: mandatory parameter
- * @...: variadic parameters
- * Return: count
+ * @...: variable parameter
+ * Return: zero (0)
  */
 int _printf(const char *format, ...)
 {
-	int value;
-	char *str;
+	int i;
 	int count = 0;
 
 	va_list args;
 
 	va_start(args, format);
 
-	for (int i = 0; format[i] != '\0'; i++)
+	if (format == NULL)
+		return (-1);
+
+	for (i = 0; format[i] != '\0'; i++)
 	{
 		if (format[i] != '%')
 		{
@@ -27,30 +29,28 @@ int _printf(const char *format, ...)
 			switch (format[i + 1])
 			{
 				case 'c':
-					value = va_arg(args, int);
-
-					write(1, &value, 1);
-					count++;
+					character(args, &count);
 					break;
 				case 's':
-					str = va_arg(args, char *);
-
-					write(1, str, strlen(str));
-					count += strlen(str);
+					_string(args, &count);
 					break;
 				case '%':
-					write(1, &format[i], 1);
-					count++;
+					percent(&count);
+					break;
+				case 'b':
+					binary(args, &count);
+					break;
+				case 'd':
+				case 'i':
+					_integer(args, &count);
 					break;
 				default:
-
 				write(1, &format[i], 1);
-				count ++;
+				count++;
 			}
 			i++;
 		}
 	}
-
 	va_end(args);
 
 	return (count);
